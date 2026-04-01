@@ -35,6 +35,15 @@ def clean_blocklist():
     _token_blocklist.clear()
 
 
+@pytest.fixture(scope="session", autouse=True)
+def _register_test_routes(app):
+    from flask import abort
+
+    @app.route("/_test/force-422")
+    def _force_422():
+        abort(422)
+
+
 @pytest.fixture
 def active_user(app):
     with app.app_context():

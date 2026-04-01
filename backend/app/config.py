@@ -5,9 +5,15 @@ from dotenv import load_dotenv
 load_dotenv()
 
 
+def _jwt_expires() -> timedelta:
+    """Lee JWT_ACCESS_TOKEN_EXPIRES_HOURS del entorno (default 1)."""
+    hours = int(os.getenv("JWT_ACCESS_TOKEN_EXPIRES_HOURS", "1"))
+    return timedelta(hours=hours)
+
+
 class BaseConfig:
     SECRET_KEY: str = os.getenv("SECRET_KEY", "change-me")
-    JWT_SECRET_KEY: str = os.getenv("JWT_SECRET", "change-me")
+    JWT_SECRET_KEY: str = os.getenv("JWT_SECRET_KEY", "change-me")
     SQLALCHEMY_TRACK_MODIFICATIONS: bool = False
     SQLALCHEMY_DATABASE_URI: str = os.getenv(
         "DATABASE_URL", "sqlite:///dev.db"
@@ -26,7 +32,7 @@ class BaseConfig:
     WHATSAPP_SUPPORT_NUMBER: str = os.getenv(
         "WHATSAPP_SUPPORT_NUMBER", "521XXXXXXXXXX"
     )
-    JWT_ACCESS_TOKEN_EXPIRES: timedelta = timedelta(hours=1)
+    JWT_ACCESS_TOKEN_EXPIRES: timedelta = _jwt_expires()
     INTERNAL_API_KEY: str = os.getenv("INTERNAL_API_KEY", "change-me-internal")
 
 
